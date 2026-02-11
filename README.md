@@ -1,6 +1,8 @@
-# Sample AEM project template
+# Example AEM project
 
-This is a project template for AEM-based applications. It is intended as a best-practice set of examples as well as a potential starting point to develop your own functionality.
+* Generated from archetype:
+
+        mvn -B org.apache.maven.plugins:maven-archetype-plugin:3.3.1:generate -D archetypeGroupId=com.adobe.aem -D archetypeArtifactId=aem-project-archetype -D archetypeVersion=56 -D aemVersion=cloud -D appTitle="Example Site" -D appId="com.example" -D groupId="com.example" -D frontendModule=none -D includeExamples=y -D includeErrorHandler=y -D includeDispatcherConfig=y -D enableDynamicMedia=y -D precompiledScripts=y
 
 ## Modules
 
