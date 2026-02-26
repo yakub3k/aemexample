@@ -1,5 +1,10 @@
 {
   "resource.resolver.mapping": [
-    "/content/com.example/</", "/:/"
+    "/content/com.example/</",
+    "/:/",
+    "publish-p168577-e1921806.adobeaemcloud.com=/content/com.example/us/en",
+    "publish-p168577-e1921807.adobeaemcloud.com=/content/com.example/pl/en",
+    "publish-p168577-e1802854.adobeaemcloud.com=/content/com.example/uk/en",
+    "publish-p168577-e1802787.adobeaemcloud.com=/content/com.example/fr/en"
   ]
 }

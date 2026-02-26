@@ -1,0 +1,55 @@
+#
+# Publish virtual host for FR tenant.
+#
+
+# Include customer defined variables
+Include conf.d/variables/custom.vars
+
+<VirtualHost *:80>
+	ServerName	"publish-p168577-e1802787.adobeaemcloud.com"
+	ServerAlias	"publish-p168577-e1802787.adobeaemcloud.com"
+	DocumentRoot "${DOCROOT}"
+	AllowEncodedSlashes NoDecode
+	<IfModule mod_headers.c>
+		Header add X-Vhost "publish-fr"
+	</IfModule>
+	<Directory />
+		<IfModule disp_apache2.c>
+			ModMimeUsePathInfo On
+			DirectorySlash Off
+			SetHandler dispatcher-handler
+		</IfModule>
+		Options FollowSymLinks
+		AllowOverride None
+		SetOutputFilter DEFLATE
+		SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+		Header always append X-Frame-Options SAMEORIGIN
+	</Directory>
+	<Directory "${DOCROOT}">
+		AllowOverride None
+		Require all granted
+	</Directory>
+	<IfModule disp_apache2.c>
+		DispatcherUseProcessedURL	On
+		DispatcherPassError		0
+	</IfModule>
+	<IfModule mod_rewrite.c>
+		RewriteEngine	on
+		Include conf.d/rewrites/rewrite.rules
+
+		RewriteRule "^/?$" "/content/com.example/fr/en.html" [PT,L]
+		RewriteCond %{REQUEST_URI} !^/etc\.clientlibs/
+		RewriteCond %{REQUEST_URI} !^/content/
+		RewriteCond %{REQUEST_URI} !^/content/dam/
+		RewriteCond %{REQUEST_URI} !^/content/experience-fragments/
+		RewriteCond %{REQUEST_URI} !^/content/forms/
+		RewriteCond %{REQUEST_URI} !^/etc/
+		RewriteCond %{REQUEST_URI} !^/libs/
+		RewriteCond %{REQUEST_URI} !^/system/
+		RewriteCond %{REQUEST_URI} !^/apps/
+		RewriteCond %{REQUEST_URI} !^/bin/
+		RewriteCond %{REQUEST_URI} !^/conf/
+		RewriteCond %{REQUEST_URI} !^/graphql/
+		RewriteRule ^/(.*)$ "/content/com.example/fr/en/$1" [PT,L]
+	</IfModule>
+</VirtualHost>

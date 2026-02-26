@@ -6,8 +6,19 @@
 
 $include "./default_filters.any"
 
+# Tenant content roots
+/1001 { /type "allow" /url "/content/com.example/us/en/*" }
+/1002 { /type "allow" /url "/content/com.example/pl/en/*" }
+/1003 { /type "allow" /url "/content/com.example/uk/en/*" }
+/1004 { /type "allow" /url "/content/com.example/fr/en/*" }
+
+# Shared content used by tenants
+/1010 { /type "allow" /url "/content/dam/com.example/*" }
+/1011 { /type "allow" /url "/content/experience-fragments/com.example/*" }
+/1012 { /type "allow" /url "/content/forms/*" }
+
 # Allow components JSON model
-/0101 { /type "allow" /extension "json" /selectors "model" /path "/content/*" }
+/1101 { /type "allow" /extension "json" /selectors "model" /path "/content/*" }
 
 # Allow manifest.webmanifest files located in the content
-/0102 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }
+/1102 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }

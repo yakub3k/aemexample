@@ -8,4 +8,5 @@
     </filter>
     <filter root="/content/dam/com.example/asset.jpg" mode="merge"/>
     <filter root="/content/experience-fragments/com.example" mode="merge"/>
+    <filter root="/etc/map" mode="merge"/>
 </workspaceFilter>
