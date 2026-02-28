@@ -1,0 +1,14 @@
+<div class="cmp-cv-profile" data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+    <div class="cmp-cv-profile__image" data-sly-test="${properties.fileReference}">
+        <img class="cmp-cv-profile__image" src="${properties.fileReference}" alt="Profile image"/>
+    </div>
+    <div class="cmp-cv-profile__list" data-sly-test.entries="${resource.getChild.entries}">
+        <ul data-sly-list.entry="${entries.listChildren}">
+            <li class="cmp-cv-profile__item">
+                <h4 class="cmp-cv-profile__item-header" data-sly-test="${entry.header}">${entry.header}</h4>
+                <div class="cmp-cv-profile__item-text" data-sly-test="${entry.item}">${entry.item}</div>
+            </li>
+        </ul>
+    </div>
+    <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!(properties.fileReference || entries)}"></sly>
+</div>

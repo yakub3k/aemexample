@@ -1,0 +1,170 @@
+/* Global CV Page Styles */
+.cv-page-root {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    line-height: 1.5;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Personal Info */
+.cmp-personal-info {
+    margin-bottom: 30px;
+}
+.cmp-personal-info__name {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: #000;
+}
+.cmp-personal-info__position {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.cmp-personal-info__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14px;
+    color: #444;
+}
+.cmp-personal-info__detail-item {
+    display: flex;
+    align-items: center;
+}
+.cmp-personal-info__detail-item b {
+    margin-right: 5px;
+    color: #000;
+}
+
+/* CV Section */
+.cmp-cv-section {
+    margin-bottom: 30px;
+}
+.cmp-cv-section__title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+/* Summary */
+.cmp-cv-summary {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* Experience */
+.cmp-cv-experience {
+    margin-bottom: 20px;
+}
+.cmp-cv-experience__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+.cmp-cv-experience__title {
+    font-weight: bold;
+    font-size: 16px;
+}
+.cmp-cv-experience__date {
+    font-size: 14px;
+    color: #777;
+}
+.cmp-cv-experience__subheader {
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #555;
+}
+.cmp-cv-experience__description {
+    font-size: 14px;
+}
+
+/* Education */
+.cmp-cv-education {
+    margin-bottom: 15px;
+}
+.cmp-cv-education__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+.cmp-cv-education__degree {
+    font-weight: bold;
+    font-size: 16px;
+}
+.cmp-cv-education__date {
+    font-size: 14px;
+    color: #777;
+}
+.cmp-cv-education__school {
+    font-size: 15px;
+    color: #555;
+}
+
+/* Profile / Sidebar Items */
+.cmp-cv-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.cmp-cv-profile__image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #eee;
+}
+.cmp-cv-profile__list {
+    width: 100%;
+}
+.cmp-cv-profile__item {
+    margin-bottom: 15px;
+}
+.cmp-cv-profile__item-header {
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    color: #333;
+}
+.cmp-cv-profile__item-text {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Layout helpers for two columns if needed */
+.cv-layout-container {
+    display: flex;
+    gap: 40px;
+}
+.cv-layout-main {
+    flex: 2;
+}
+.cv-layout-sidebar {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .cv-layout-container {
+        flex-direction: column;
+    }
+    .cv-page-root {
+        padding: 20px;
+        margin: 0;
+    }
+}

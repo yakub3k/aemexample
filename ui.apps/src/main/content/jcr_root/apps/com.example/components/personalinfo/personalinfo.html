@@ -1,0 +1,11 @@
+<div class="cmp-personal-info" data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+    <h1 class="cmp-personal-info__name" data-sly-test="${properties.firstName || properties.lastName}">${properties.firstName} ${properties.lastName}</h1>
+    <p class="cmp-personal-info__position" data-sly-test="${properties.position}">${properties.position}</p>
+    <div class="cmp-personal-info__details">
+        <div class="cmp-personal-info__detail-item" data-sly-test="${properties.phone}"><b>Phone:</b> ${properties.phone}</div>
+        <div class="cmp-personal-info__detail-item" data-sly-test="${properties.email}"><b>Email:</b> ${properties.email}</div>
+        <div class="cmp-personal-info__detail-item" data-sly-test="${properties.linkedin}"><b>LinkedIn:</b> ${properties.linkedin}</div>
+        <div class="cmp-personal-info__detail-item" data-sly-test="${properties.country}"><b>Country:</b> ${properties.country}</div>
+    </div>
+    <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!properties.firstName}"></sly>
+</div>

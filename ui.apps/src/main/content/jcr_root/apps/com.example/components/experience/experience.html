@@ -1,0 +1,14 @@
+<div class="cmp-cv-experience" data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+    <header class="cmp-cv-experience__header">
+        <h3 class="cmp-cv-experience__title" data-sly-test="${properties.title}">${properties.title}</h3>
+        <span class="cmp-cv-experience__date" data-sly-test="${properties.date}">${properties.date}</span>
+    </header>
+    <div class="cmp-cv-experience__subheader" data-sly-test="${properties.position || properties.city}">
+        <span class="cmp-cv-experience__position" data-sly-test="${properties.position}">${properties.position}</span>
+        <span class="cmp-cv-experience__city" data-sly-test="${properties.city}">, ${properties.city}</span>
+    </div>
+    <div class="cmp-cv-experience__description" data-sly-test="${properties.description}">
+        ${properties.description @ context='html'}
+    </div>
+    <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!(properties.title || properties.position || properties.description)}"></sly>
+</div>

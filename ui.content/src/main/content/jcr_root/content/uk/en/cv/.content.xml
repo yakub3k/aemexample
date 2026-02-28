@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:deviceGroups="[mobile/groups/responsive]"
+        cq:template="/conf/com.example/settings/wcm/templates/cv-page"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Sample CV"
+        sling:resourceType="com.example/components/page">
+        <root jcr:primaryType="nt:unstructured" sling:resourceType="com.example/components/container" layout="responsiveGrid">
+            <container jcr:primaryType="nt:unstructured" sling:resourceType="com.example/components/container" layout="responsiveGrid" cssClass="cv-page-root">
+                <!-- Personal Info -->
+                <personalinfo
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="com.example/components/personalinfo"
+                    firstName="Alex"
+                    lastName="Taylor"
+                    position="Senior Product Manager"
+                    phone="(+44) 7700 900123"
+                    email="alex.taylor@example.com"
+                    linkedin="linkedin.com/in/alextaylor"
+                    country="United Kingdom"/>
+
+                <!-- Profile (sidebar-like block, optional) -->
+                <profile
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="com.example/components/profile"
+                    fileReference=""
+                    >
+                    <entries jcr:primaryType="nt:unstructured">
+                        <item0 jcr:primaryType="nt:unstructured" header="Skills" item="Product strategy, Roadmapping, A/B testing, UX collaboration"/>
+                        <item1 jcr:primaryType="nt:unstructured" header="Tools" item="Jira, Figma, Mixpanel, Google Analytics"/>
+                        <item2 jcr:primaryType="nt:unstructured" header="Languages" item="English (C2), Polish (B2)"/>
+                    </entries>
+                </profile>
+
+                <!-- Summary section -->
+                <summarySection
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="com.example/components/cvsection"
+                    jcr:title="Summary">
+                    <container jcr:primaryType="nt:unstructured" sling:resourceType="core/wcm/components/container/v1/container">
+                        <summary
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="com.example/components/summary"
+                            description="Product leader with 8+ years experience delivering data‑driven solutions that grow revenue and improve user satisfaction. Comfortable owning end‑to‑end lifecycle: discovery, delivery, and iteration."/>
+                    </container>
+                </summarySection>
+
+                <!-- Experience section -->
+                <experienceSection
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="com.example/components/cvsection"
+                    jcr:title="Experience">
+                    <container jcr:primaryType="nt:unstructured" sling:resourceType="core/wcm/components/container/v1/container">
+                        <exp0
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="com.example/components/experience"
+                            title="Acme Corp"
+                            date="2022 — Present"
+                            position="Senior Product Manager"
+                            city="London"
+                            description="&lt;ul>&lt;li>Led cross‑functional team of 10 to launch new onboarding, improving activation by 18%.&lt;/li>&lt;li>Defined KPI framework; introduced weekly product reviews and experiment pipeline.&lt;/li>&lt;/ul>"/>
+                        <exp1
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="com.example/components/experience"
+                            title="BrightApps"
+                            date="2019 — 2022"
+                            position="Product Manager"
+                            city="Manchester"
+                            description="&lt;ul>&lt;li>Shipped subscription paywall increasing MRR by 24%.&lt;/li>&lt;li>Partnered with UX to streamline checkout, reducing drop‑off by 15%.&lt;/li>&lt;/ul>"/>
+                    </container>
+                </experienceSection>
+
+                <!-- Education section -->
+                <educationSection
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="com.example/components/cvsection"
+                    jcr:title="Education">
+                    <container jcr:primaryType="nt:unstructured" sling:resourceType="core/wcm/components/container/v1/container">
+                        <edu0
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="com.example/components/education"
+                            fieldOfStudy="MSc, Computer Science"
+                            university="University of Leeds"
+                            date="2015 — 2017"/>
+                        <edu1
+                            jcr:primaryType="nt:unstructured"
+                            sling:resourceType="com.example/components/education"
+                            fieldOfStudy="BSc, Information Systems"
+                            university="University of Leeds"
+                            date="2012 — 2015"/>
+                    </container>
+                </educationSection>
+            </container>
+        </root>
+        <cq:responsive jcr:primaryType="nt:unstructured">
+            <breakpoints jcr:primaryType="nt:unstructured">
+                <phone jcr:primaryType="nt:unstructured" title="Smaller Screen" width="{Long}768"/>
+                <tablet jcr:primaryType="nt:unstructured" title="Tablet" width="{Long}1200"/>
+            </breakpoints>
+        </cq:responsive>
+    </jcr:content>
+</jcr:root>

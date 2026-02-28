@@ -2,6 +2,7 @@
 <workspaceFilter version="1.0">
     <filter root="/conf/com.example" mode="merge"/>
     <filter root="/content/com.example" mode="merge"/>
+    <filter root="/content/uk" mode="merge"/>
     <filter root="/content/dam/com.example" mode="merge">
         <exclude pattern="/content/dam/com.example(/.*)?"/>
         <include pattern="/content/dam/com.example/jcr:content(/.*)?"/>

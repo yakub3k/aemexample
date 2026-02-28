@@ -1,0 +1,8 @@
+<div class="cmp-cv-education" data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+    <div class="cmp-cv-education__header">
+        <h3 class="cmp-cv-education__degree" data-sly-test="${properties.fieldOfStudy}">${properties.fieldOfStudy}</h3>
+        <span class="cmp-cv-education__date" data-sly-test="${properties.date}">${properties.date}</span>
+    </div>
+    <div class="cmp-cv-education__school" data-sly-test="${properties.university}">${properties.university}</div>
+    <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!(properties.fieldOfStudy || properties.university)}"></sly>
+</div>

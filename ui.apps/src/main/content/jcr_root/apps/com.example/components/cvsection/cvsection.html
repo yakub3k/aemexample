@@ -1,0 +1,5 @@
+<div class="cmp-cv-section" data-sly-use.placeholderTemplate="core/wcm/components/commons/v1/templates.html">
+    <h2 class="cmp-cv-section__title" data-sly-test="${properties.jcr:title}">${properties.jcr:title}</h2>
+    <div data-sly-resource="${'container' @ resourceType='core/wcm/components/container/v1/container'}"></div>
+    <sly data-sly-call="${placeholderTemplate.placeholder @ isEmpty=!properties.jcr:title}"></sly>
+</div>
