@@ -2,11 +2,11 @@
     <div class="cmp-cv-profile__image" data-sly-test="${properties.fileReference}">
         <img class="cmp-cv-profile__image" src="${properties.fileReference}" alt="Profile image"/>
     </div>
-    <div class="cmp-cv-profile__list" data-sly-test.entries="${resource.getChild.entries}">
-        <ul data-sly-list.entry="${entries.listChildren}">
+    <div class="cmp-cv-profile__list" data-sly-test.entries="${resource.children['entries']}">
+        <ul data-sly-list.entry="${entries.children}">
             <li class="cmp-cv-profile__item">
-                <h4 class="cmp-cv-profile__item-header" data-sly-test="${entry.header}">${entry.header}</h4>
-                <div class="cmp-cv-profile__item-text" data-sly-test="${entry.item}">${entry.item}</div>
+                <h4 class="cmp-cv-profile__item-header" data-sly-test.header="${entry.valueMap.header}">${header}</h4>
+                <div class="cmp-cv-profile__item-text" data-sly-test.item="${entry.valueMap.item}">${item}</div>
             </li>
         </ul>
     </div>
