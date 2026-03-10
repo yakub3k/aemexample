@@ -18,6 +18,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 
 /**
  * Servlet bound to the {@code com.example/components/ekwsearch} resource type.
@@ -38,6 +39,7 @@ import java.io.PrintWriter;
 @ServiceDescription("EKW Search Servlet – Księgi Wieczyste lookup")
 public class EkwSearchServlet extends SlingSafeMethodsServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(EkwSearchServlet.class);
 
