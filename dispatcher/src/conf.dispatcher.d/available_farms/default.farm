@@ -17,10 +17,10 @@
 	/clientheaders {
 		$include "../clientheaders/clientheaders.any"
 	}
-	# hostname globbing for farm selection (virtual domain addressing)
-	/virtualhosts {
-		$include "../virtualhosts/virtualhosts.any"
-	}
+ # hostname globbing for farm selection (virtual domain addressing)
+ /virtualhosts {
+         $include "../virtualhosts/default_virtualhosts.any"
+ }
 	# the load will be balanced among these render instances
 	/renders {
 		$include "../renders/default_renders.any"
