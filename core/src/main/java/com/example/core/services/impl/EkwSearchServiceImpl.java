@@ -287,7 +287,7 @@ public class EkwSearchServiceImpl implements EkwSearchService {
      * Save HTML content to a file in the configured output directory.
      */
     @SuppressWarnings("PATH_TRAVERSAL_IN")
-    private void saveHtmlToFile(String html, String kodWydzialu, String numerKsiegi, String cyfraKontrolna) {
+    private void saveHtmlToFile(String html, String kwDepartment, String kwNumber, String kwChecksum) {
         try {
             Path outputDir = Paths.get(outputDirectory);
             if (!Files.exists(outputDir)) {
@@ -296,7 +296,7 @@ public class EkwSearchServiceImpl implements EkwSearchService {
 
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             String filename = String.format("ekw_%s_%s_%s_%s.html",
-                    kodWydzialu, numerKsiegi, cyfraKontrolna, timestamp);
+                    kwDepartment, kwNumber, kwChecksum, timestamp);
             Path filePath = outputDir.resolve(filename);
 
             Files.writeString(filePath, html, StandardCharsets.UTF_8);
