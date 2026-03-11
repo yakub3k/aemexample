@@ -2,6 +2,8 @@ package com.example.core.services;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
+import java.io.IOException;
+
 /**
  * Service interface for operations using projekt-user-system service user.
  */
@@ -26,6 +28,6 @@ public interface ProjectUserService {
      */
     @FunctionalInterface
     interface ResourceResolverOperation {
-        void execute(ResourceResolver resolver) throws Exception;
+        void execute(ResourceResolver resolver) throws IOException;
     }
 }

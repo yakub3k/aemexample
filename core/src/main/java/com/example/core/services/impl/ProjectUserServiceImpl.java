@@ -10,6 +10,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class ProjectUserServiceImpl implements ProjectUserService {
             } else {
                 LOG.error("Failed to obtain service resource resolver");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.error("Error executing operation with service user", e);
         } finally {
             if (resolver != null && resolver.isLive()) {

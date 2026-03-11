@@ -46,6 +46,7 @@ public class EkwSearchServlet extends SlingSafeMethodsServlet {
     @Reference
     private transient EkwSearchService ekwSearchService;
 
+    @SuppressWarnings("CQRules:CQBP-44---LogInfoInGetOrHeadRequests")
     @Override
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse response) throws ServletException, IOException {
@@ -123,6 +124,7 @@ public class EkwSearchServlet extends SlingSafeMethodsServlet {
                 }
 
                 writer.println("    </div>");
+                // to do fix exception
             } catch (Exception e) {
                 LOG.error("Error during EKW search", e);
                 writer.println("    <div class=\"result error\">");
