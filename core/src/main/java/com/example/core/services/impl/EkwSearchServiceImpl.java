@@ -286,9 +286,9 @@ public class EkwSearchServiceImpl implements EkwSearchService {
     /**
      * Save HTML content to a file in the configured output directory.
      */
+    @SuppressWarnings("PATH_TRAVERSAL_IN")
     private void saveHtmlToFile(String html, String kodWydzialu, String numerKsiegi, String cyfraKontrolna) {
         try {
-            @SuppressWarnings("PATH_TRAVERSAL_IN")
             Path outputDir = Paths.get(outputDirectory);
             if (!Files.exists(outputDir)) {
                 Files.createDirectories(outputDir);
