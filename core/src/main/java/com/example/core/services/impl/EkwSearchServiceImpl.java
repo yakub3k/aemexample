@@ -1,6 +1,7 @@
 package com.example.core.services.impl;
 
 import com.example.core.services.EkwSearchService;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -286,9 +287,9 @@ public class EkwSearchServiceImpl implements EkwSearchService {
     /**
      * Save HTML content to a file in the configured output directory.
      */
-    @SuppressWarnings("PATH_TRAVERSAL_IN")
     private void saveHtmlToFile(String html, String kwDepartment, String kwNumber, String kwChecksum) {
         try {
+            @SuppressFBWarnings("PATH_TRAVERSAL_IN")
             Path outputDir = Paths.get(outputDirectory);
             if (!Files.exists(outputDir)) {
                 Files.createDirectories(outputDir);
