@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * OSGi service implementation for automated EKW (Elektroniczne Księgi Wieczyste) search.
+ * OSGi service implementation for automated EKW (EKW) search.
  * Uses Selenium WebDriver with Chrome to bypass Incapsula/Imperva anti-bot protection,
  * matching the behavior of the Python script (scripts/ekw_search.py).
  */
@@ -40,16 +40,12 @@ public class EkwSearchServiceImpl implements EkwSearchService {
 
     private static final Logger LOG = LoggerFactory.getLogger(EkwSearchServiceImpl.class);
 
-    private static final String DEFAULT_KOD_WYDZIALU = "LU1I";
-    private static final String DEFAULT_NUMER_KSIEGI = "00016057";
-
     private static final String EKW_SEARCH_URL =
             "https://przegladarka-ekw.ms.gov.pl/eukw_prz/KsiegiWieczyste/wyszukiwanieKW"
                     + "?komunikaty=true&kontakt=true&okienkoSerwisowe=false";
 
     private static final String USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                    + "(KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36";
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36";
 
     private static final int DEFAULT_TIMEOUT_SECONDS = 30;
     private static final int ANTI_BOT_WAIT_SECONDS = 10;
@@ -61,7 +57,7 @@ public class EkwSearchServiceImpl implements EkwSearchService {
 
     @ObjectClassDefinition(
             name = "EKW Search Service Configuration",
-            description = "Configuration for the Elektroniczne Księgi Wieczyste search service"
+            description = "Configuration for the EKW search service"
     )
     @interface Config {
 
@@ -95,14 +91,9 @@ public class EkwSearchServiceImpl implements EkwSearchService {
     }
 
     @Override
-    public EkwSearchResult searchDefault() {
-        return searchKsiegaWieczysta(DEFAULT_KOD_WYDZIALU, DEFAULT_NUMER_KSIEGI);
-    }
-
-    @Override
-    public EkwSearchResult searchKsiegaWieczysta(String kodWydzialu, String numerKsiegi) {
-        String cyfraKontrolna = String.valueOf(calculateCheckDigit(kodWydzialu, numerKsiegi));
-        LOG.info("Searching for księga wieczysta: {}/{}/{}", kodWydzialu, numerKsiegi, cyfraKontrolna);
+    public EkwSearchResult searchKW(String kwDepartment, String kwNumber) {
+        String kwChecksum = String.valueOf(calculateCheckDigit(kwDepartment, kwNumber));
+        LOG.info("Searching for EKW: {}/{}/{}", kwDepartment, kwNumber, kwChecksum);
 
         WebDriver driver = null;
         try {
@@ -119,23 +110,23 @@ public class EkwSearchServiceImpl implements EkwSearchService {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
 
             // Step 3: Fill in the form fields
-            LOG.info("[3] Filling in kod wydziału: {}", kodWydzialu);
+            LOG.info("[3] Filling in kod wydziału: {}", kwDepartment);
             WebElement kodInput = wait.until(
                     ExpectedConditions.presenceOfElementLocated(By.id("kodWydzialuInput")));
             kodInput.clear();
-            kodInput.sendKeys(kodWydzialu);
+            kodInput.sendKeys(kwDepartment);
 
-            LOG.info("[4] Filling in numer księgi: {}", numerKsiegi);
+            LOG.info("[4] Filling in numer księgi: {}", kwNumber);
             WebElement numerInput = wait.until(
                     ExpectedConditions.presenceOfElementLocated(By.id("numerKsiegiWieczystej")));
             numerInput.clear();
-            numerInput.sendKeys(numerKsiegi);
+            numerInput.sendKeys(kwNumber);
 
-            LOG.info("[5] Filling in cyfra kontrolna: {}", cyfraKontrolna);
+            LOG.info("[5] Filling in cyfra kontrolna: {}", kwChecksum);
             WebElement cyfraInput = wait.until(
-                    ExpectedConditions.presenceOfElementLocated(By.id("cyfraKontrolna")));
+                    ExpectedConditions.presenceOfElementLocated(By.id("kwChecksum")));
             cyfraInput.clear();
-            cyfraInput.sendKeys(cyfraKontrolna);
+            cyfraInput.sendKeys(kwChecksum);
 
             // Step 4: Click the search button
             LOG.info("[6] Clicking 'Wyszukaj księgę wieczystą' button");
@@ -154,21 +145,21 @@ public class EkwSearchServiceImpl implements EkwSearchService {
 
             LOG.info("[8] Page title: {}, URL: {}", title, currentUrl);
 
-            boolean isSuccess = validateResponse(pageSource, kodWydzialu);
+            boolean isSuccess = validateResponse(pageSource, kwDepartment);
 
             if (isSuccess) {
                 String cleanHtml = cleanHtml(pageSource);
-                saveHtmlToFile(cleanHtml, kodWydzialu, numerKsiegi, cyfraKontrolna);
+                saveHtmlToFile(cleanHtml, kwDepartment, kwNumber, kwChecksum);
                 LOG.info("[9] Search completed successfully. Results saved.");
                 return new EkwSearchResult(true, cleanHtml,
-                        "Księga wieczysta " + kodWydzialu + "/" + numerKsiegi + "/" + cyfraKontrolna
+                        "Księga wieczysta " + kwDepartment + "/" + kwNumber + "/" + kwChecksum
                                 + " found successfully.");
             } else {
-                saveHtmlToFile(pageSource, kodWydzialu, numerKsiegi, cyfraKontrolna);
+                saveHtmlToFile(pageSource, kwDepartment, kwNumber, kwChecksum);
                 LOG.warn("[9] Search completed but results may not be valid.");
                 return new EkwSearchResult(false, pageSource,
                         "Search completed but could not confirm valid results for "
-                                + kodWydzialu + "/" + numerKsiegi + "/" + cyfraKontrolna);
+                                + kwDepartment + "/" + kwNumber + "/" + kwChecksum);
             }
 
         } catch (InterruptedException e) {
@@ -253,15 +244,15 @@ public class EkwSearchServiceImpl implements EkwSearchService {
     }
 
     @Override
-    public int calculateCheckDigit(String kodWydzialu, String numerKsiegi) {
-        if (kodWydzialu == null || numerKsiegi == null) {
-            throw new IllegalArgumentException("kodWydzialu and numerKsiegi must not be null");
+    public int calculateCheckDigit(String kwDepartment, String kwNumber) {
+        if (kwDepartment == null || kwNumber == null) {
+            throw new IllegalArgumentException("kwDepartment and kwNumber must not be null");
         }
 
-        String input = (kodWydzialu + numerKsiegi).toUpperCase();
+        String input = (kwDepartment + kwNumber).toUpperCase();
         if (input.length() != 12) {
             throw new IllegalArgumentException(
-                    "kodWydzialu (4 chars) + numerKsiegi (8 chars) must be 12 characters total, got: " + input.length());
+                    "kwDepartment (4 chars) + kwNumber (8 chars) must be 12 characters total, got: " + input.length());
         }
 
         int[] weights = {1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7};
@@ -287,9 +278,9 @@ public class EkwSearchServiceImpl implements EkwSearchService {
     /**
      * Save HTML content to a file in the configured output directory.
      */
+    @SuppressFBWarnings(value = "PATH_TRAVERSAL_IN", justification = "")
     private void saveHtmlToFile(String html, String kwDepartment, String kwNumber, String kwChecksum) {
         try {
-            @SuppressWarnings("java:S2221")
             Path outputDir = Paths.get(outputDirectory);
             if (!Files.exists(outputDir)) {
                 Files.createDirectories(outputDir);

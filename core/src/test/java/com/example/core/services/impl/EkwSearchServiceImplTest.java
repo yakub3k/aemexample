@@ -192,7 +192,7 @@ class EkwSearchServiceImplTest {
     // --- searchDefault tests ---
 
     @Test
-    void searchDefault_callsSearchKsiegaWieczysta() throws Exception {
+    void searchDefault_callsSearchKW() throws Exception {
         // Verify searchDefault delegates to searchKsiegaWieczysta.
         // We use a spy to confirm delegation without requiring a real WebDriver.
         activateService(tempDir.toString(), 2, true);
@@ -201,19 +201,19 @@ class EkwSearchServiceImplTest {
         EkwSearchService.EkwSearchResult mockResult =
                 new EkwSearchService.EkwSearchResult(true, "<html/>", "OK");
         org.mockito.Mockito.doReturn(mockResult)
-                .when(spy).searchKsiegaWieczysta("LU1I", "00016057");
+                .when(spy).searchKW("LU1I", "00016057");
 
-        EkwSearchService.EkwSearchResult result = spy.searchDefault();
+        EkwSearchService.EkwSearchResult result = spy.searchKW("LU1I", "00016057");
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals("OK", result.getMessage());
-        org.mockito.Mockito.verify(spy).searchKsiegaWieczysta("LU1I", "00016057");
+        org.mockito.Mockito.verify(spy).searchKW("LU1I", "00016057");
     }
 
     // --- searchKsiegaWieczysta error handling tests ---
 
     @Test
-    void searchKsiegaWieczysta_returnsNonNullResult() throws Exception {
+    void searchKW_returnsNonNullResult() throws Exception {
         // Verify the method contract: it always returns a non-null EkwSearchResult
         // even when delegation fails. We use spy + doReturn to avoid WebDriver initialization.
         activateService(tempDir.toString(), 2, true);
@@ -222,10 +222,10 @@ class EkwSearchServiceImplTest {
         EkwSearchService.EkwSearchResult failResult =
                 new EkwSearchService.EkwSearchResult(false, null, "Mocked failure");
         org.mockito.Mockito.doReturn(failResult)
-                .when(spy).searchKsiegaWieczysta(org.mockito.Mockito.anyString(),
+                .when(spy).searchKW(org.mockito.Mockito.anyString(),
                         org.mockito.Mockito.anyString());
 
-        EkwSearchService.EkwSearchResult result = spy.searchKsiegaWieczysta("XX1X", "99999999");
+        EkwSearchService.EkwSearchResult result = spy.searchKW("XX1X", "99999999");
         assertNotNull(result);
         assertFalse(result.isSuccess());
         assertEquals("Mocked failure", result.getMessage());
@@ -286,7 +286,7 @@ class EkwSearchServiceImplTest {
     }
 
     @Test
-    void calculateCheckDigit_nullNumerKsiegi_throwsException() {
+    void calculateCheckDigit_nullkwNumber_throwsException() {
         assertThrows(IllegalArgumentException.class, () ->
                 service.calculateCheckDigit("LU1I", null));
     }
@@ -363,9 +363,9 @@ class EkwSearchServiceImplTest {
         return (String) method.invoke(service, html);
     }
 
-    private void invokeSaveHtmlToFile(String html, String kodWydzialu, String numerKsiegi, String cyfraKontrolna) throws Exception {
+    private void invokeSaveHtmlToFile(String html, String kodWydzialu, String kwNumber, String cyfraKontrolna) throws Exception {
         Method method = EkwSearchServiceImpl.class.getDeclaredMethod("saveHtmlToFile", String.class, String.class, String.class, String.class);
         method.setAccessible(true);
-        method.invoke(service, html, kodWydzialu, numerKsiegi, cyfraKontrolna);
+        method.invoke(service, html, kodWydzialu, kwNumber, cyfraKontrolna);
     }
 }

@@ -22,10 +22,10 @@ import java.io.Serial;
 
 /**
  * Servlet bound to the {@code com.example/components/ekwsearch} resource type.
- * Accepts three GET parameters needed to search the land registry (Księga Wieczysta):
+ * Accepts three GET parameters needed to search the land registry (EKW):
  * <ul>
  *   <li>{@code kodWydzialu} – court department code, e.g. "LU1I"</li>
- *   <li>{@code numerKsiegi} – registry number, e.g. "00016057"</li>
+ *   <li>{@code kwNumber} – registry number, e.g. "00016057"</li>
  *   <li>{@code cyfraKontrolna} – check digit, e.g. "7"</li>
  * </ul>
  * Delegates the search to {@link EkwSearchService} and renders the result page.
@@ -51,14 +51,14 @@ public class EkwSearchServlet extends SlingSafeMethodsServlet {
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse response) throws ServletException, IOException {
 
-        String kodWydzialu = request.getParameter("kodWydzialu");
-        String numerKsiegi = request.getParameter("numerKsiegi");
+        String kwDepartment = request.getParameter("kwDepartment");
+        String kwNumber = request.getParameter("kwNumber");
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter writer = response.getWriter();
 
-        boolean hasAllParams = StringUtils.isNotBlank(kodWydzialu)
-                && StringUtils.isNotBlank(numerKsiegi);
+        boolean hasAllParams = StringUtils.isNotBlank(kwDepartment)
+                && StringUtils.isNotBlank(kwNumber);
 
         writer.println("<!DOCTYPE html>");
         writer.println("<html lang=\"pl\">");
@@ -87,30 +87,31 @@ public class EkwSearchServlet extends SlingSafeMethodsServlet {
 
         // Search form
         writer.println("    <form class=\"search-form\" method=\"get\">");
-        writer.println("      <label for=\"kodWydzialu\">Kod wydziału</label>");
-        writer.println("      <input id=\"kodWydzialu\" name=\"kodWydzialu\" type=\"text\" placeholder=\"np. LU1I\" value=\""
-                + escapeHtml(kodWydzialu) + "\"/>");
-        writer.println("      <label for=\"numerKsiegi\">Numer księgi</label>");
-        writer.println("      <input id=\"numerKsiegi\" name=\"numerKsiegi\" type=\"text\" placeholder=\"np. 00016057\" value=\""
-                + escapeHtml(numerKsiegi) + "\"/>");
+        writer.println("      <label for=\"kwDepartment\">Kod wydziału</label>");
+        writer.println("      <input id=\"kwDepartment\" name=\"kwDepartment\" type=\"text\" placeholder=\"np. LU1I\" value=\""
+                + escapeHtml(kwDepartment) + "\"/>");
+        writer.println("      <label for=\"kwNumber\">Numer księgi</label>");
+        writer.println("      <input id=\"kwNumber\" name=\"kwNumber\" type=\"text\" placeholder=\"np. 00016057\" value=\""
+                + escapeHtml(kwNumber) + "\"/>");
         writer.println("      <button type=\"submit\">Szukaj</button>");
         writer.println("    </form>");
 
         // Perform search if all parameters are provided
         if (hasAllParams) {
-            LOG.info("EKW search requested – kodWydzialu={}, numerKsiegi={}",
-                    kodWydzialu, numerKsiegi);
+            LOG.info("EKW search requested – kwDepartment={}, kwNumber={}",
+                    kwDepartment, kwNumber);
 
             try {
-                EkwSearchResult result = ekwSearchService.searchKsiegaWieczysta(
-                        kodWydzialu, numerKsiegi);
+                EkwSearchResult result = ekwSearchService.searchKW(kwDepartment, kwNumber);
 
-                String cssClass = result.isSuccess() ? "success" : "error";
+                String successClass = result.isSuccess() ? "success" : "error";
+                String successLabel = result.isSuccess() ? "Sukces" : "Błąd";
 
-                writer.println("    <div class=\"result " + cssClass + "\">");
-                writer.println("      <h2>Wynik wyszukiwania: " + escapeHtml(kodWydzialu) + "/"
-                        + escapeHtml(numerKsiegi) + "</h2>");
-                writer.println("      <p><strong>Status:</strong> " + (result.isSuccess() ? "Sukces" : "Błąd") + "</p>");
+
+                writer.println("    <div class=\"result " + successClass + "\">");
+                writer.println("      <h2>Wynik wyszukiwania: " + escapeHtml(kwDepartment) + "/"
+                        + escapeHtml(kwNumber) + "</h2>");
+                writer.println("      <p><strong>Status:</strong> " + successLabel + "</p>");
 
                 if (StringUtils.isNotBlank(result.getMessage())) {
                     writer.println("      <p><strong>Komunikat:</strong> " + escapeHtml(result.getMessage()) + "</p>");
@@ -125,7 +126,7 @@ public class EkwSearchServlet extends SlingSafeMethodsServlet {
 
                 writer.println("    </div>");
                 // to do fix exception
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LOG.error("Error during EKW search", e);
                 writer.println("    <div class=\"result error\">");
                 writer.println("      <h2>Błąd wyszukiwania</h2>");

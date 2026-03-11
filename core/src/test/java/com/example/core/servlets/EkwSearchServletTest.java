@@ -43,8 +43,8 @@ class EkwSearchServletTest {
 
     @Test
     void doGet_withoutParams_rendersFormOnly() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn(null);
-        when(request.getParameter("numerKsiegi")).thenReturn(null);
+        when(request.getParameter("kwDepartment")).thenReturn(null);
+        when(request.getParameter("kwNumber")).thenReturn(null);
 
         servlet.doGet(request, response);
 
@@ -52,18 +52,18 @@ class EkwSearchServletTest {
         verify(response).setContentType("text/html;charset=UTF-8");
         assertTrue(html.contains("Wyszukiwarka Ksiąg Wieczystych"));
         assertTrue(html.contains("<form"));
-        assertTrue(html.contains("kodWydzialu"));
+        assertTrue(html.contains("kwDepartment"));
         assertFalse(html.contains("Wynik wyszukiwania"));
         verifyNoInteractions(ekwSearchService);
     }
 
     @Test
     void doGet_withAllParams_callsServiceAndRendersResult() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("LU1I");
-        when(request.getParameter("numerKsiegi")).thenReturn("00016057");
+        when(request.getParameter("kwDepartment")).thenReturn("LU1I");
+        when(request.getParameter("kwNumber")).thenReturn("00016057");
 
         EkwSearchResult result = new EkwSearchResult(true, "<p>Dane księgi</p>", "Znaleziono");
-        when(ekwSearchService.searchKsiegaWieczysta("LU1I", "00016057")).thenReturn(result);
+        when(ekwSearchService.searchKW("LU1I", "00016057")).thenReturn(result);
 
         servlet.doGet(request, response);
 
@@ -72,16 +72,16 @@ class EkwSearchServletTest {
         assertTrue(html.contains("Sukces"));
         assertTrue(html.contains("Znaleziono"));
         assertTrue(html.contains("<p>Dane księgi</p>"));
-        verify(ekwSearchService).searchKsiegaWieczysta("LU1I", "00016057");
+        verify(ekwSearchService).searchKW("LU1I", "00016057");
     }
 
     @Test
     void doGet_withAllParams_serviceReturnsError() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("XX1X");
-        when(request.getParameter("numerKsiegi")).thenReturn("99999999");
+        when(request.getParameter("kwDepartment")).thenReturn("XX1X");
+        when(request.getParameter("kwNumber")).thenReturn("99999999");
 
         EkwSearchResult result = new EkwSearchResult(false, null, "Nie znaleziono");
-        when(ekwSearchService.searchKsiegaWieczysta("XX1X", "99999999")).thenReturn(result);
+        when(ekwSearchService.searchKW("XX1X", "99999999")).thenReturn(result);
 
         servlet.doGet(request, response);
 
@@ -92,10 +92,10 @@ class EkwSearchServletTest {
 
     @Test
     void doGet_withAllParams_serviceThrowsException() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("LU1I");
-        when(request.getParameter("numerKsiegi")).thenReturn("00016057");
+        when(request.getParameter("kwDepartment")).thenReturn("LU1I");
+        when(request.getParameter("kwNumber")).thenReturn("00016057");
 
-        when(ekwSearchService.searchKsiegaWieczysta(anyString(), anyString()))
+        when(ekwSearchService.searchKW(anyString(), anyString()))
                 .thenThrow(new RuntimeException("Connection timeout"));
 
         servlet.doGet(request, response);
@@ -107,8 +107,8 @@ class EkwSearchServletTest {
 
     @Test
     void doGet_withPartialParams_doesNotCallService() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("LU1I");
-        when(request.getParameter("numerKsiegi")).thenReturn(null);
+        when(request.getParameter("kwDepartment")).thenReturn("LU1I");
+        when(request.getParameter("kwNumber")).thenReturn(null);
 
         servlet.doGet(request, response);
 
@@ -117,8 +117,8 @@ class EkwSearchServletTest {
 
     @Test
     void doGet_withBlankParams_doesNotCallService() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("LU1I");
-        when(request.getParameter("numerKsiegi")).thenReturn("  ");
+        when(request.getParameter("kwDepartment")).thenReturn("LU1I");
+        when(request.getParameter("kwNumber")).thenReturn("  ");
 
         servlet.doGet(request, response);
 
@@ -127,8 +127,8 @@ class EkwSearchServletTest {
 
     @Test
     void doGet_escapesHtmlInParameters() throws Exception {
-        when(request.getParameter("kodWydzialu")).thenReturn("<script>alert(1)</script>");
-        when(request.getParameter("numerKsiegi")).thenReturn("00016057");
+        when(request.getParameter("kwDepartment")).thenReturn("<script>alert(1)</script>");
+        when(request.getParameter("kwNumber")).thenReturn("00016057");
 
         servlet.doGet(request, response);
 
