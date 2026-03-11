@@ -289,7 +289,7 @@ public class EkwSearchServiceImpl implements EkwSearchService {
      */
     private void saveHtmlToFile(String html, String kwDepartment, String kwNumber, String kwChecksum) {
         try {
-            @SuppressFBWarnings("PATH_TRAVERSAL_IN")
+            @SuppressWarnings("java:S2221")
             Path outputDir = Paths.get(outputDirectory);
             if (!Files.exists(outputDir)) {
                 Files.createDirectories(outputDir);
