@@ -6,7 +6,7 @@
             cq:redirectTarget="/content/com.example/us/en"
             cq:template="/conf/com.example/settings/wcm/templates/page-content"
             jcr:primaryType="cq:PageContent"
-            jcr:title="us"
+            jcr:title="US"
             sling:resourceType="com.example/components/page"/>
     <en/>
 </jcr:root>

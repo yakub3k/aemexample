@@ -3,6 +3,7 @@
     jcr:primaryType="cq:Page">
     <jcr:content
         cq:allowedTemplates="[/conf/com.example/settings/wcm/templates/(?!xf-).*]"
+        cq:redirectTarget="/content/com.example/uk/en"
         cq:conf="/conf/com.example"
         jcr:primaryType="cq:PageContent"
         jcr:title="UK"
