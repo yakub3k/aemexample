@@ -6,4 +6,5 @@
         jcr:title="English"
         sling:resourceType="com.example/components/page"/>
     <cv/>
+    <ekwsearch/>
 </jcr:root>
